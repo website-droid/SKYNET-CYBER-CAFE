@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYNET CYBER | TOTAL HUB</title>
+    <script src="https://cloudflare.com"></script>
+    <script src="https://cloudflare.com"></script>
+    <style>
+        :root { --neon: #00f3ff; --dark: #010103; --glass: rgba(0, 243, 255, 0.05); --gold: #ffcc00; }
+        body, html { margin: 0; padding: 0; background: var(--dark); color: white; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; }
+
+        .container { width: 94%; max-width: 1400px; margin: auto; padding: 10px 0; }
+        header { text-align: center; margin-bottom: 25px; padding-top: 15px; }
+        h1 { font-size: clamp(2rem, 10vw, 4.5rem); letter-spacing: 5px; text-shadow: 0 0 20px var(--neon); margin: 0; font-weight: 900; }
+
+        /* 👑 GOLDEN PAYMENT HUB */
+        .pay-card {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.1), rgba(0,0,0,0.9));
+            border: 2px solid var(--gold); padding: 20px; border-radius: 20px;
+            margin-bottom: 30px; text-align: center; box-shadow: 0 0 30px rgba(255, 204, 0, 0.2);
+        }
+        .pay-detail { font-family: monospace; font-size: 1.1rem; color: #fff; background: rgba(255, 204, 0, 0.1); padding: 10px; border-radius: 8px; display: inline-block; margin: 5px; border: 1px solid rgba(255, 204, 0, 0.3); }
+
+        /* 🔐 ADMIN PANEL */
+        #admin-panel { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 25px; text-align: center; }
+        .admin-content { display: none; margin-top: 20px; border-top: 2px solid var(--neon); padding-top: 20px; text-align: left; }
+        .admin-input { background: #000; border: 1px solid var(--neon); color: white; padding: 12px; border-radius: 5px; width: 100%; max-width: 300px; margin-bottom: 10px; text-align: center; }
+
+        /* 🗂️ GRID CARDS */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 15px; }
+        .card { background: var(--glass); border: 1px solid rgba(0, 243, 255, 0.1); padding: 25px; border-radius: 20px; backdrop-filter: blur(15px); position: relative; }
+        .card h3 { color: var(--neon); text-transform: uppercase; font-size: 1rem; border-bottom: 1px solid #222; padding-bottom: 10px; margin-top: 0; }
+        .card ul { list-style: none; padding: 0; font-size: 0.85rem; line-height: 1.8; }
+        .card li::before { content: "⚡ "; color: var(--neon); }
+
+        .admin-delete-btn { display: none; position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px; font-size: 0.7rem; z-index: 5; font-weight: bold; }
+
+        /* 🤖 TERMINAL */
+        #terminal { background: #000; border: 1px solid var(--neon); height: 400px; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; margin-top: 30px; box-shadow: 0 0 40px rgba(0, 243, 255, 0.1); }
+        #stream { flex: 1; padding: 20px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.9rem; color: #00ff00; }
+        .input-bar { display: flex; border-top: 1px solid #222; }
+        .input-bar input { flex: 1; background: transparent; border: none; color: white; padding: 20px; outline: none; font-size: 1rem; }
+        .btn-run { background: var(--neon); color: black; border: none; padding: 0 30px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+        #whatsapp-trigger { position: fixed; bottom: 25px; left: 25px; background: #25d366; color: white; padding: 15px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; z-index: 5000; box-shadow: 0 0 20px rgba(37, 211, 102, 0.5); border: none; font-size: 1rem; display: flex; align-items: center; text-decoration: none; }
+
+        #media-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        .media-container { position: relative; border: 1px solid var(--neon); border-radius: 10px; overflow: hidden; }
+        .media-container img, .media-container video { width: 100%; height: auto; display: block; }
+    </style>
+</head>
+<body onload="loadPersistentData()">
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <h1>SKYNET CYBER</h1>
+            <p style="font-size: 0.75rem; color: var(--neon); letter-spacing: 3px; font-weight: bold;">SECURITY • EDUCATION • STATUTORY HUB</p>
+        </header>
+
+        <!-- 👑 PAYMENT HUB -->
+        <section class="pay-card">
+            <h2 style="color:var(--gold); margin-bottom:10px;">OFFICIAL PAYMENT CHANNEL</h2>
+            <div class="pay-detail">LOOP BIZ ACCOUNT</div><br>
+            <div class="pay-detail">PAYBILL: <b>714888</b></div>
+            <div class="pay-detail">ACCOUNT: <b>467108</b></div>
+        </section>
+
+        <!-- 🛠️ ADMIN MASTER PANEL -->
+        <section id="admin-panel">
+            <div id="login-form">
+                <input type="password" id="admPass" class="admin-input" placeholder="Enter Authorization Key">
+                <button onclick="unlockAdmin()" class="btn-run" style="padding: 12px 25px; border-radius: 5px;">AUTHORIZE</button>
+            </div>
+            <div id="admin-tools" class="admin-content">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3 style="color:var(--neon); margin:0;">SYSTEM OVERRIDE ACTIVE</h3>
+                    <button onclick="lockAdmin()" style="background:red; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">EXIT & LOCK</button>
+                </div>
+                <div class="grid">
+                    <div class="card" style="background: rgba(255,255,255,0.02);">
+                        <p><b>Add New Topic/Program:</b></p>
+                        <input type="text" id="topicTitle" class="admin-input" placeholder="Title">
+                        <input type="text" id="topicDesc" class="admin-input" placeholder="Details">
+                        <button onclick="addTopic()" class="btn-run" style="width: 100%;">DEPLOY TO SITE</button>
+                    </div>
+                    <div class="card" style="background: rgba(255,255,255,0.02);">
+                        <p><b>Master Media Upload:</b></p>
+                        <input type="file" id="mediaInput" class="admin-input" accept="image/*,video/*" multiple>
+                        <button onclick="uploadMedia()" class="btn-run" style="width: 100%;">UPLOAD TO GALLERY</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🚀 FULL MASSIVE SERVICES GRID -->
+        <div class="grid" id="main-grid">
+            <div class="card">
+                <h3>🏛️ KRA & STATUTORY</h3>
+                <ul>
+                    <li>Individual & Company Returns</li>
+                    <li>KRA PIN & E-Tims Onboarding</li>
+                    <li>SHA (NHIF) & NSSF Registration</li>
+                    <li>HELB & Statutory Compliance</li>
+                    <li>Payslip Generation & Printing</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🆔 E-CITIZEN HUB</h3>
+                <ul>
+                    <li>Passport Application & Replacement</li>
+                    <li>Police Clearance (Good Conduct)</li>
+                    <li>Driving License (DL) Services</li>
+                    <li>ID Application / Replacement</li>
+                    <li>Birth & Death Certificate Apps</li>
+                    <li>Business Name Registration</li>
+                    <li>Vehicle Transfer of User</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🎓 EDUCATION & C.B.E</h3>
+                <ul>
+                    <li style="color:var(--neon); font-weight:bold;">Creation of Schemes of Work</li>
+                    <li style="color:var(--neon); font-weight:bold;">Lesson Plans Generation</li>
+                    <li style="color:var(--neon); font-weight:bold;">Record of Work Covered</li>
+                    <li>Learner Registration & Assessment</li>
+                    <li>Keying Results & Analysis</li>
+                    <li>Exam Printing & Materials</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🎨 CREATIVE STUDIO</h3>
+                <ul>
+                    <li>Wedding & Invitation Cards</li>
+                    <li>Professional Eulogy Cards</li>
+                    <li>Design Card Printing</li>
+                    <li>Flyers, Posters & Pro Logos</li>
+                    <li>Passport Photos Generation</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🏢 CYBER & TECH</h3>
+                <ul>
+                    <li>Website & App Development</li>
+                    <li>IT Consultancy & Cyber Security</li>
+                    <li>Scanning, Lamination, Binding</li>
+                    <li>Associations & Groups Registration</li>
+                    <li>Internet Cafe & Online Jobs</li>
+                    <li>Typing, Photocopy & Printing</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 🖼️ MEDIA GALLERY -->
+        <div id="media-display"></div>
+
+        <!-- 🤖 AI TERMINAL -->
+        <div id="terminal">
+            <div id="stream"><div>[AI]: Skynet Omni-Brain Online. Massive Intel & Data Persistence Active. How can I assist?</div></div>
+            <div class="input-bar">
+                <input type="text" id="query" placeholder="Ask about services or prices..." onkeypress="if(event.key==='Enter') runAI()">
+                <button class="btn-run" onclick="runAI()">RUN</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:30px; text-align:center;">
+            <b style="color:var(--neon);">📞 CONTACT:</b> 0716622515 | 0119854200
+        </div>
+    </div>
+
+    <button id="whatsapp-trigger" onclick="openWA()">
+        <span style="margin-right:10px;">💬</span> WHATSAPP SUPPORT
+    </button>
+
+    <script>
+        let IS_ADMIN = false;
+
+        function openWA() {
+            const phone = "254716622515";
+            const msg = encodeURIComponent("Hello Skynet Digital, I am interested in your professional services. Please assist me.");
+            window.open(`https://wa.me{phone}?text=${msg}`, '_blank').focus();
+        }
+
+        function unlockAdmin() {
+            const p = document.getElementById('admPass').value;
+            if(p === "SKYNET@26") {
+                IS_ADMIN = true;
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('admin-tools').style.display = 'block';
+                document.querySelectorAll('.admin-delete-btn').forEach(btn => btn.style.display = 'block');
+                alert("ROOT ACCESS AUTHORIZED");
+            } else { alert("ACCESS DENIED"); }
+        }
+
+        function lockAdmin() {
+            IS_ADMIN = false;
+            document.getElementById('admPass').value = "";
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('admin-tools').style.display = 'none';
+            document.querySelectorAll('.admin-delete-btn').forEach(btn => btn.style.display = 'none');
+        }
+
+        // --- PERSISTENCE LOGIC ---
+        function addTopic() {
+            const title = document.getElementById('topicTitle').value;
+            const desc = document.getElementById('topicDesc').value;
+            if(!title) return;
+            const id = 'topic-' + Date.now();
+            const topics = JSON.parse(localStorage.getItem('skynet_topics') || '[]');
+            topics.push({id, title, desc});
+            localStorage.setItem('skynet_topics', JSON.stringify(topics));
+            renderTopic(id, title, desc);
+            document.getElementById('topicTitle').value = '';
+            document.getElementById('topicDesc').value = '';
+        }
+
+        function renderTopic(id, title, desc) {
+            const grid = document.getElementById('main-grid');
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.id = id;
+            card.innerHTML = `
+                <button class="admin-delete-btn" style="${IS_ADMIN ? 'display:block' : ''}" onclick="deletePersistentTopic('${id}')">DELETE</button>
+                <h3>${title}</h3>
+                <ul><li>${desc}</li></ul>
+            `;
+            grid.appendChild(card);
+        }
+
+        function deletePersistentTopic(id) {
+            let topics = JSON.parse(localStorage.getItem('skynet_topics') || '[]');
+            topics = topics.filter(t => t.id !== id);
+            localStorage.setItem('skynet_topics', JSON.stringify(topics));
+            document.getElementById(id).remove();
+        }
+
+        function uploadMedia() {
+            const input = document.getElementById('mediaInput');
+            if(!input.files.length) return;
+            const mediaList = JSON.parse(localStorage.getItem('skynet_media') || '[]');
+            
+            for(let file of input.files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const id = 'media-' + Date.now() + Math.random();
+                    const type = file.type.startsWith('image/') ? 'img' : 'video';
+                    const data = e.target.result;
+                    mediaList.push({id, type, data});
+                    localStorage.setItem('skynet_media', JSON.stringify(mediaList));
+                    renderMedia(id, type, data);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function renderMedia(id, type, data) {
+            const display = document.getElementById('media-display');
+            const container = document.createElement('div');
+            container.className = 'media-container';
+            container.id = id;
+            const btn = `<button class="admin-delete-btn" style="${IS_ADMIN ? 'display:block' : ''}" onclick="deletePersistentMedia('${id}')">DELETE</button>`;
+            container.innerHTML = type === 'img' ? `${btn}<img src="${data}">` : `${btn}<video src="${data}" controls></video>`;
+            display.appendChild(container);
+        }
+
+        function deletePersistentMedia(id) {
+            let mediaList = JSON.parse(localStorage.getItem('skynet_media') || '[]');
+            mediaList = mediaList.filter(m => m.id !== id);
+            localStorage.setItem('skynet_media', JSON.stringify(mediaList));
+            document.getElementById(id).remove();
+        }
+
+        function loadPersistentData() {
+            const topics = JSON.parse(localStorage.getItem('skynet_topics') || '[]');
+            topics.forEach(t => renderTopic(t.id, t.title, t.desc));
+            const media = JSON.parse(localStorage.getItem('skynet_media') || '[]');
+            media.forEach(m => renderMedia(m.id, m.type, m.data));
+        }
+
+        // --- MASTER AI KNOWLEDGE ---
+        function runAI() {
+            const inp = document.getElementById('query');
+            const stream = document.getElementById('stream');
+            const val = inp.value.toLowerCase();
+            if(!val) return;
+            stream.innerHTML += `<div>>> ${inp.value}</div>`;
+            
+            let res = "Skynet Cyber Pro: All rates are NEGOTIABLE. Call 0716622515 or 0119854200. Security is our priority.";
+            
+            if(val.includes("kra") || val.includes("tax")) res = "KRA PRICING: Individual returns from 200/-, Business/E-Tims vary. All rates are NEGOTIABLE.";
+            if(val.includes("scheme") || val.includes("plan")) res = "EDUCATION: We create CBC Schemes of Work, Lesson Plans, and Records of Work Covered.";
+            if(val.includes("passport")) res = "PASSPORT: Full E-Citizen app handling. Need ID and Birth Cert. Service fee is negotiable.";
+            if(val.includes("pay") || val.includes("bill")) res = "PAYMENT: Loop Biz. Paybill 714888, Account 467108. Secure & Instant.";
+            if(val.includes("security") || val.includes("safe")) res = "SECURITY: Your accounts are safe. We use encrypted sessions and do not store passwords.";
+
+            setTimeout(() => {
+                stream.innerHTML += `<div style="color:var(--neon); margin:10px 0;">[AI]: ${res}</div>`;
+                stream.scrollTop = stream.scrollHeight;
+            }, 400);
+            inp.value = "";
+        }
+
+        // --- 🌌 WEBGL ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        const stars = new THREE.BufferGeometry();
+        const starPos = new Float32Array(3000 * 3);
+        for(let i=0; i<9000; i++) starPos[i] = (Math.random() - 0.5) * 25;
+        stars.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        const starMesh = new THREE.Points(stars, new THREE.PointsMaterial({ color: 0x00f3ff, size: 0.02 }));
+        scene.add(starMesh);
+        camera.position.z = 5;
+        function animate() { requestAnimationFrame(animate); starMesh.position.z += 0.1; if(starMesh.position.z > 5) starMesh.position.z = 0; renderer.render(scene, camera); }
+        animate();
+    </script>
+</body>
+</html>
